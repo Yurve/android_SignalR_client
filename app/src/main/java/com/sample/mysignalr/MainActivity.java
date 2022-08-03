@@ -50,12 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     String user = "android";
                     String message = editText.getText().toString();
                     editText.setText("");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            hubConnection.send("SendMessage", user, message);
-                        }
-                    }).start();
+                    hubConnection.send("SendMessage", user, message);
                 } else {
                     Toast.makeText(getApplicationContext(), "전송 중 오류 발생", Toast.LENGTH_SHORT).show();
                 }
@@ -63,14 +58,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //메시지를 받을 때
+
         hubConnection.on("ReceiveMessage", (user, message) -> {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    textView.append(user + " : " + message + "\n");
-                }
-            });
+            textView.append(user + " : " + message + "\n");
         }, String.class, String.class);
 
 
